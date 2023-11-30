@@ -1,8 +1,8 @@
 <?php
 
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\InvoiceController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,9 +17,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::apiResource('/invoices', InvoiceController::class);
+    Route::apiResource('invoices', InvoiceController::class);
 });
 
-Route::post('/login', LoginController::class)->name('login');
+Route::post('login', LoginController::class)->name('login');
 
-// Route::post('/signUp', RegisterController::class)->name('register');
+Route::post('register', RegisterController::class)->name('register');
