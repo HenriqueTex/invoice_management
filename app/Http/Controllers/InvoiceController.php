@@ -21,6 +21,7 @@ class InvoiceController extends Controller
 
     public function store(CreateOrUpdateInvoiceRequest $request)
     {
+
         $data = $request->validated();
 
         $user = auth()->user();
@@ -33,9 +34,12 @@ class InvoiceController extends Controller
 
     public function show(Invoice $invoice)
     {
+
         if (!$invoice) {
             return response()->json(['message' => 'Invoice not found'], 404);
         }
+
+        $this->authorize('view', $invoice);
 
         return response()->json($invoice);
     }
@@ -44,6 +48,12 @@ class InvoiceController extends Controller
 
     public function update(CreateOrUpdateInvoiceRequest $request, Invoice $invoice)
     {
+        if (!$invoice) {
+            return response()->json(['message' => 'Invoice not found'], 404);
+        }
+
+        $this->authorize('update', $invoice);
+
         $data = $request->validated();
 
         $invoice->update($data);
@@ -57,6 +67,8 @@ class InvoiceController extends Controller
         if (!$invoice) {
             return response()->json(['message' => 'Invoice not found'], 404);
         }
+
+        $this->authorize('delete', $invoice);
 
         $invoice->delete();
 
