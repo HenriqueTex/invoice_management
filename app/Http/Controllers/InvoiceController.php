@@ -4,16 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Invoice\CreateOrUpdateInvoiceRequest;
 use App\Models\Invoice;
-use Illuminate\Http\Request;
+use App\Notifications\InvoiceCreated;
 
 class InvoiceController extends Controller
 {
 
     public function index()
     {
+        /** @var User $user */
         $user = auth()->user();
 
-        $invoices = Invoice::filterByUserId($user->id)->get();
+        $invoices = $user->invoices()->get();
 
         return response()->json($invoices);
     }
@@ -21,12 +22,15 @@ class InvoiceController extends Controller
 
     public function store(CreateOrUpdateInvoiceRequest $request)
     {
-
         $data = $request->validated();
 
+
+        /** @var User $user */
         $user = auth()->user();
 
         $invoice = $user->invoices()->create($data);
+
+        $user->notify(new InvoiceCreated($invoice));
 
         return response()->json($invoice, 201);
     }
@@ -34,11 +38,6 @@ class InvoiceController extends Controller
 
     public function show(Invoice $invoice)
     {
-
-        if (!$invoice) {
-            return response()->json(['message' => 'Invoice not found'], 404);
-        }
-
         $this->authorize('view', $invoice);
 
         return response()->json($invoice);
@@ -48,30 +47,24 @@ class InvoiceController extends Controller
 
     public function update(CreateOrUpdateInvoiceRequest $request, Invoice $invoice)
     {
-        if (!$invoice) {
-            return response()->json(['message' => 'Invoice not found'], 404);
-        }
-
         $this->authorize('update', $invoice);
 
         $data = $request->validated();
 
         $invoice->update($data);
 
-        return response()->json($invoice, 200);
+        $invoice->refresh();
+
+        return response()->json($invoice);
     }
 
 
     public function destroy(Invoice $invoice)
     {
-        if (!$invoice) {
-            return response()->json(['message' => 'Invoice not found'], 404);
-        }
-
         $this->authorize('delete', $invoice);
 
         $invoice->delete();
 
-        return response()->json(['message' => 'Invoice deleted'], 200);
+        return response()->noContent();
     }
 }

@@ -22,4 +22,4 @@ Route::middleware('auth:sanctum')->group(function () {
 
 Route::post('/login', LoginController::class)->name('login');
 
-Route::post('/register', LoginController::class)->name('login');
+// Route::post('/signUp', RegisterController::class)->name('register');
