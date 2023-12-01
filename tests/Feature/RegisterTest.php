@@ -6,7 +6,6 @@ use function Pest\Laravel\assertDatabaseCount;
 use function Pest\Laravel\assertDatabaseEmpty;
 use function Pest\Laravel\assertDatabaseHas;
 use function Pest\Laravel\assertDatabaseMissing;
-use function Pest\Laravel\post;
 use function Pest\Laravel\postJson;
 
 it('should be able to register a user', function () {
@@ -18,7 +17,7 @@ it('should be able to register a user', function () {
             "password_confirmation" => "password"
         ];
 
-    postJson('/api/register', $request)->assertOk()->assertJsonStructure(["token", "token_type"]);
+    postJson('/api/register', $request)->assertOk()->assertJsonStructure(["name", "email", "updated_at", "created_at", 'id']);
 
     assertDatabaseHas(User::class, ['email' => $request['email'], 'name' => $request['name']]);
 

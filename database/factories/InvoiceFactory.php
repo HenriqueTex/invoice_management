@@ -18,7 +18,7 @@ class InvoiceFactory extends Factory
     public function definition(): array
     {
         return [
-            "unique_document_identifier" => $this->faker->randomNumber(9),
+            "unique_document_identifier" => $this->faker->randomNumber(9, 9),
             "value" => $this->faker->randomFloat(2, 0, 10000),
             "issue_date" => $this->faker->dateTimeBetween('-1 years', 'now')->format('Y-m-d\TH:i:s.u\Z'),
             "sender_cnpj" => $this->faker->cnpj(false),

@@ -26,7 +26,6 @@ class InvoiceController extends Controller
     {
         $data = $request->validated();
 
-
         /** @var User $user */
         $user = auth()->user();
 

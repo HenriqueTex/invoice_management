@@ -41,7 +41,7 @@ it('should  be able to show a invoice ', function () {
         ->assertOk()->assertJson($invoice->toArray());
 });
 
-it('should  be able to store a invoice ', function () {
+it('should  be able tpo store a invoice ', function () {
     $user = auth()->user();
 
     $invoice = Invoice::factory()->for($user)
