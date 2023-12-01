@@ -16,6 +16,8 @@ class InvoiceController extends Controller
 
         $invoices = $user->invoices()->get();
 
+        $t = Invoice::all();
+
         return response()->json($invoices);
     }
 
